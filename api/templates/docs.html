@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dokumentasi Penggunaan Aplikasi Flask</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #333;
+        }
+
+        code {
+            background-color: #f4f4f4;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+
+        .endpoint {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+
+        #passwordForm {
+            text-align: center;
+            margin: 50px auto;
+            max-width: 400px;
+        }
+
+        #passwordInput {
+            padding: 8px;
+            margin: 10px 0;
+            width: 200px;
+        }
+
+        #submitBtn {
+            padding: 8px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #submitBtn:hover {
+            background-color: #45a049;
+        }
+
+        #content {
+            display: none;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="passwordForm">
+        <h2>Masukkan Password</h2>
+        <input type="password" id="passwordInput" placeholder="Masukkan password">
+        <br>
+        <button id="submitBtn" onclick="checkPassword()">Masuk</button>
+        <p id="errorMessage" class="error-message"></p>
+    </div>
+
+    <div id="content">
+        <h1>Dokumentasi Penggunaan Aplikasi Flask</h1>
+
+        <h2>Cara Menjalankan Aplikasi</h2>
+        <ol>
+            <li>Pastikan semua dependensi terinstal:
+                <pre><code>pip install -r requirements.txt</code></pre>
+            </li>
+            <li>Jalankan aplikasi dengan perintah:
+                <pre><code>python api/index.py</code></pre>
+            </li>
+            <li>Aplikasi akan berjalan di <code id="serverUrl">http://localhost:5000</code></li>
+        </ol>
+
+        <h2>Cara Menggunakan API</h2>
+
+        <div class="endpoint">
+            <h3>1. Halaman Utama</h3>
+            <p>Untuk melihat halaman utama, akses:</p>
+            <pre><code id="demoUrl">http://localhost:5000/</code></pre>
+            <p>Ini akan menampilkan halaman utama</p>
+        </div>
+
+        <div class="endpoint">
+            <h3>2. Halaman Dokumentasi</h3>
+            <p>Buka browser dan akses:</p>
+            <pre><code id="mainUrl">http://localhost:5000/docs</code></pre>
+            <p>Ini akan menampilkan halaman Dokumentasi</p>
+        </div>
+
+
+        <div class="endpoint">
+            <h3>3. Menggunakan Fitur AI (Endpoint /generate)</h3>
+            <p>Untuk menggunakan fitur AI, kirimkan request POST ke:</p>
+            <pre><code id="generateUrl">http://localhost:5000/generate</code></pre>
+
+            <h4>Cara Menggunakan:</h4>
+            <ol>
+                <li>Kirimkan data dalam format form-data dengan parameter:
+                    <ul>
+                        <li><code>prompt</code>: Pertanyaan atau perintah yang ingin ditanyakan ke AI</li>
+                        <li><code>history</code>: Riwayat percakapan sebelumnya (opsional)</li>
+                    </ul>
+                </li>
+                <li>Contoh request menggunakan curl:
+                    <pre><code id="curlExample">curl -X POST http://localhost:5000/generate \
+-F "prompt=Berikan saya informasi tentang data ini" \
+-F "history=Riwayat percakapan sebelumnya"</code></pre>
+                </li>
+            </ol>
+
+            <h4>Format Response:</h4>
+            <pre><code>{
+    'payload': {
+        'response': 'Jawaban dari AI dalam format HTML'
+    },
+    'input': {
+        'data': 'Data CSV',
+        'prompt': 'Pertanyaan user',
+        'history': 'Riwayat chat'
+    },
+    'message': 'get response'
+}</code></pre>
+        </div>
+
+        <h2>Catatan Penting</h2>
+        <ul>
+            <li>Aplikasi menggunakan Google Sheets sebagai sumber data <a
+                    href="https://docs.google.com/spreadsheets/d/1H5ssE9M1tDsP_GQW4gaBTZFSKW_KcHdLnkftpmtC8KM/edit?gid=0#gid=0"
+                    target="_blank">disini datanya</a></li>
+            <li>Jawaban dari AI akan dikonversi ke format HTML</li>
+            <li>Pastikan API key Gemini sudah diatur dengan benar</li>
+            <li>Aplikasi mendukung CORS untuk keperluan pengembangan</li>
+        </ul>
+
+        <h2>Pemecahan Masalah</h2>
+        <ul>
+            <li>Jika aplikasi tidak berjalan, pastikan port 5000 tidak digunakan oleh aplikasi lain</li>
+            <li>Jika terjadi error saat mengakses Google Sheets, periksa koneksi internet dan pastikan sheet dapat di
+                akses secara public</li>
+            <li>Pastikan semua dependensi dan seluruh libarary terinstal dengan benar</li>
+        </ul>
+    </div>
+
+    <script>
+        // Update all URLs with current server URL
+        function updateUrls() {
+            const currentUrl = window.location.origin;
+            const elements = [
+                'serverUrl',
+                'mainUrl',
+                'demoUrl',
+                'generateUrl',
+                'curlExample'
+            ];
+
+            elements.forEach(id => {
+                const element = document.getElementById(id);
+                if (element) {
+                    element.textContent = element.textContent.replace('http://localhost:5000', currentUrl);
+                }
+            });
+        }
+
+        function checkPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const correctPassword = 'gak ada';
+            const errorMessage = document.getElementById('errorMessage');
+            const content = document.getElementById('content');
+            const passwordForm = document.getElementById('passwordForm');
+
+            if (password === correctPassword) {
+                content.style.display = 'block';
+                passwordForm.style.display = 'none';
+                errorMessage.textContent = '';
+                updateUrls(); // Update URLs when content is shown
+            } else {
+                errorMessage.textContent = 'Password salah! Silakan coba lagi.';
+            }
+        }
+
+        // Allow Enter key to submit password
+        document.getElementById('passwordInput').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                checkPassword();
+            }
+        });
+    </script>
+</body>
+
+</html>
